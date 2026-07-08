@@ -1,11 +1,14 @@
-# SoftEther SSTP VPN App
+# SoftEther VPN App
 
-A simple Flutter-based Android VPN client starter for SoftEther SSTP profiles. The app currently supports:
+A Flutter-based Android app for managing SoftEther VPN profiles with SSTP/SSL-style connection settings.
 
-- saving VPN profiles locally
-- managing server, port, username, password, and hub settings
-- a basic connect/disconnect UI
-- Android method-channel bridge for native SSTP integration
+## Features
+
+- Save and manage VPN profiles locally
+- Configure server address, port, hub, username, password
+- Toggle certificate usage and set SNI/DNS values
+- Simple connection-state UI with status and event log
+- Android launcher icon and polished starter UI
 
 ## Getting started
 
@@ -15,4 +18,4 @@ A simple Flutter-based Android VPN client starter for SoftEther SSTP profiles. T
 
 ## Notes
 
-This starter is a foundation for a real SSTP implementation. For production-grade SoftEther support, you will need a native Android implementation or a platform plugin that supports SSTP.
+This is a functional starter app and UI shell for SoftEther-style VPN profiles. A full native SoftEther/SSTP transport integration still requires deeper Android platform work.

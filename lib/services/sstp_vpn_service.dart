@@ -15,6 +15,17 @@ class SstpVpnService {
       throw Exception('Password is required');
     }
 
+    final validationErrors = profile.validationErrors();
+    if (validationErrors.isNotEmpty) {
+      throw Exception(validationErrors.join(', '));
+    }
+
+    if (profile.hubName.trim().isEmpty) {
+      throw Exception('Hub name is required for SoftEther connections');
+    }
+
+    final transport = profile.protocol.toUpperCase() == 'SSL' ? 'SSL' : 'SSTP';
+
     try {
       await _channel.invokeMethod('connect', {
         'serverAddress': profile.serverAddress,
@@ -22,6 +33,8 @@ class SstpVpnService {
         'username': profile.username,
         'password': profile.password,
         'hubName': profile.hubName,
+        'protocol': transport,
+        'transport': transport,
       });
     } on PlatformException catch (error) {
       throw Exception(error.message ?? 'SSTP connection failed');

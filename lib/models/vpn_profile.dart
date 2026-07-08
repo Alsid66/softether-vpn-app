@@ -8,8 +8,11 @@ class VpnProfile {
   final String username;
   final String password;
   final String hubName;
-  final String protocol; // 'SSTP' or 'OpenVPN'
-  final String? ovpnConfig; // Base64 or plain text OpenVPN config
+  final String protocol; // 'SSTP' or 'SSL'
+  final bool useCertificate;
+  final String sni;
+  final String dns;
+  final String? ovpnConfig; // Reserved for future extensions
   final DateTime createdAt;
 
   VpnProfile({
@@ -21,6 +24,9 @@ class VpnProfile {
     required this.password,
     required this.hubName,
     required this.protocol,
+    this.useCertificate = false,
+    this.sni = '',
+    this.dns = '',
     this.ovpnConfig,
     DateTime? createdAt,
   }) : createdAt = createdAt ?? DateTime.now();
@@ -36,6 +42,9 @@ class VpnProfile {
       'password': password,
       'hubName': hubName,
       'protocol': protocol,
+      'useCertificate': useCertificate,
+      'sni': sni,
+      'dns': dns,
       'ovpnConfig': ovpnConfig,
       'createdAt': createdAt.toIso8601String(),
     };
@@ -52,6 +61,9 @@ class VpnProfile {
       password: json['password'],
       hubName: json['hubName'] ?? '',
       protocol: json['protocol'] ?? 'SSTP',
+      useCertificate: json['useCertificate'] ?? false,
+      sni: json['sni'] ?? '',
+      dns: json['dns'] ?? '',
       ovpnConfig: json['ovpnConfig'],
       createdAt: DateTime.parse(json['createdAt']),
     );
@@ -60,6 +72,32 @@ class VpnProfile {
   // Convert to String for storage
   String toJsonString() {
     return jsonEncode(toJson());
+  }
+
+  List<String> validationErrors() {
+    final errors = <String>[];
+
+    if (name.trim().isEmpty) {
+      errors.add('Profile name is required');
+    }
+
+    if (serverAddress.trim().isEmpty) {
+      errors.add('Server address is required');
+    }
+
+    if (port < 1 || port > 65535) {
+      errors.add('Port must be between 1 and 65535');
+    }
+
+    if (username.trim().isEmpty) {
+      errors.add('Username is required');
+    }
+
+    if (password.trim().isEmpty) {
+      errors.add('Password is required');
+    }
+
+    return errors;
   }
 
   // Create from JSON String
@@ -77,6 +115,9 @@ class VpnProfile {
     String? password,
     String? hubName,
     String? protocol,
+    bool? useCertificate,
+    String? sni,
+    String? dns,
     String? ovpnConfig,
     DateTime? createdAt,
   }) {
@@ -89,6 +130,9 @@ class VpnProfile {
       password: password ?? this.password,
       hubName: hubName ?? this.hubName,
       protocol: protocol ?? this.protocol,
+      useCertificate: useCertificate ?? this.useCertificate,
+      sni: sni ?? this.sni,
+      dns: dns ?? this.dns,
       ovpnConfig: ovpnConfig ?? this.ovpnConfig,
       createdAt: createdAt ?? this.createdAt,
     );

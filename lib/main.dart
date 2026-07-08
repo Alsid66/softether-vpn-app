@@ -15,7 +15,7 @@ class SoftEtherVpnApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => VpnProvider()..loadProfiles(),
       child: MaterialApp(
-        title: 'SoftEther SSTP VPN',
+        title: 'SoftEther VPN',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
