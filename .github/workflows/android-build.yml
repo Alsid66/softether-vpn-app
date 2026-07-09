@@ -17,24 +17,13 @@ jobs:
         with:
           channel: 'stable'
           flutter-version: '3.16.0'
+          cache: true
 
-      # ۱. ساخت فایل local.properties
-      - name: Create local.properties
-        run: echo "flutter.sdk=$FLUTTER_ROOT" > android/local.properties
-
-      # ۲. آپدیت مستقیم نسخه گریدل در فایل تنظیمات (ترفند نهایی)
-      - name: Update Gradle Wrapper Version
-        run: |
-          mkdir -p android/gradle/wrapper
-          echo "distributionBase=GRADLE_USER_HOME" > android/gradle/wrapper/gradle-wrapper.properties
-          echo "distributionPath=wrapper/dists" >> android/gradle/wrapper/gradle-wrapper.properties
-          echo "zipStoreBase=GRADLE_USER_HOME" >> android/gradle/wrapper/gradle-wrapper.properties
-          echo "zipStorePath=wrapper/dists" >> android/gradle/wrapper/gradle-wrapper.properties
-          echo "distributionUrl=https\://services.gradle.org/distributions/gradle-8.2-all.zip" >> android/gradle/wrapper/gradle-wrapper.properties
-
+      # در ریشه پروژه پکیج‌ها را دریافت کن
       - name: Get dependencies
         run: flutter pub get
 
+      # بیلد باید از ریشه پروژه انجام شود تا فلاتر فایل‌های تنظیمی را ببیند
       - name: Build APK
         run: flutter build apk --release
 
