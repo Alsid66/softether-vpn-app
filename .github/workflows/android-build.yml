@@ -19,11 +19,15 @@ jobs:
           flutter-version: '3.16.0'
           cache: true
 
-      # در ریشه پروژه پکیج‌ها را دریافت کن
+      # ترفند نهایی: تغییر نسخه گریدل در فایل تنظیمات قبل از شروع بیلد
+      - name: Force Gradle 8.2 Upgrade
+        run: |
+          sed -i 's/gradle-8.0-all.zip/gradle-8.2-all.zip/g' android/gradle/wrapper/gradle-wrapper.properties
+          sed -i 's/gradle-8.0-bin.zip/gradle-8.2-all.zip/g' android/gradle/wrapper/gradle-wrapper.properties
+
       - name: Get dependencies
         run: flutter pub get
 
-      # بیلد باید از ریشه پروژه انجام شود تا فلاتر فایل‌های تنظیمی را ببیند
       - name: Build APK
         run: flutter build apk --release
 
