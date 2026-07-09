@@ -12,16 +12,22 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # اضافه کردن سیستم کش برای سرعت بیشتر و جلوگیری از قطعی دانلود
+      - name: Cache Flutter SDK
+        uses: actions/cache@v3
+        with:
+          path: /opt/hostedtoolcache/flutter
+          key: flutter-sdk-3.16.0
+
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
           flutter-version: '3.16.0'
+          cache: true
 
-      # ساخت فایل local.properties به صورت خودکار با مسیر درست فلاتر
       - name: Create local.properties
-        run: |
-          echo "flutter.sdk=$FLUTTER_ROOT" > android/local.properties
+        run: echo "flutter.sdk=$FLUTTER_ROOT" > android/local.properties
 
       - name: Get dependencies
         run: flutter pub get
