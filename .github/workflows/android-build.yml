@@ -3,9 +3,7 @@ name: Build Android APK
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-  workflow_dispatch: # این امکان را می‌دهد که به‌صورت دستی از تب Actions اجرا کنید
+  workflow_dispatch:
 
 jobs:
   build:
@@ -19,12 +17,18 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: gradle
 
-      - name: Grant execute permission for gradlew
+      # این بخش به صورت خودکار فایل‌های مورد نیاز گریدل را می‌سازد
+      - name: Generate Gradle Wrapper
+        run: |
+          gradle wrapper --gradle-version 8.5
+
+      - name: Grant execute permission
         run: chmod +x gradlew
 
       - name: Build with Gradle
+        # اگر فایل‌های شما در پوشه android است، اینجا تغییر مسیر بدهید:
+        # run: cd android && ./gradlew assembleDebug
         run: ./gradlew assembleDebug
 
       - name: Upload APK
