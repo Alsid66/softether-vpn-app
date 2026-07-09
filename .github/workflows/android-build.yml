@@ -12,12 +12,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # تنظیم روی نسخه ۳.۱۶ برای سازگاری با تنظیمات فعلی پروژه
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
           flutter-version: '3.16.0'
+
+      # اینجا نسخه گریدل را با دستور مستقیم آپدیت می‌کنیم
+      - name: Upgrade Gradle Wrapper
+        run: |
+          cd android
+          ./gradlew wrapper --gradle-version 8.2
 
       - name: Get dependencies
         run: |
