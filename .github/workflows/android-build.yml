@@ -12,22 +12,25 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # اضافه کردن سیستم کش برای سرعت بیشتر و جلوگیری از قطعی دانلود
-      - name: Cache Flutter SDK
-        uses: actions/cache@v3
-        with:
-          path: /opt/hostedtoolcache/flutter
-          key: flutter-sdk-3.16.0
-
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
           flutter-version: '3.16.0'
-          cache: true
 
+      # ۱. ساخت فایل local.properties
       - name: Create local.properties
         run: echo "flutter.sdk=$FLUTTER_ROOT" > android/local.properties
+
+      # ۲. آپدیت مستقیم نسخه گریدل در فایل تنظیمات (ترفند نهایی)
+      - name: Update Gradle Wrapper Version
+        run: |
+          mkdir -p android/gradle/wrapper
+          echo "distributionBase=GRADLE_USER_HOME" > android/gradle/wrapper/gradle-wrapper.properties
+          echo "distributionPath=wrapper/dists" >> android/gradle/wrapper/gradle-wrapper.properties
+          echo "zipStoreBase=GRADLE_USER_HOME" >> android/gradle/wrapper/gradle-wrapper.properties
+          echo "zipStorePath=wrapper/dists" >> android/gradle/wrapper/gradle-wrapper.properties
+          echo "distributionUrl=https\://services.gradle.org/distributions/gradle-8.2-all.zip" >> android/gradle/wrapper/gradle-wrapper.properties
 
       - name: Get dependencies
         run: flutter pub get
