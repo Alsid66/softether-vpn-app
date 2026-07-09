@@ -19,8 +19,9 @@ jobs:
           flutter-version: '3.16.0'
           cache: true
 
-      # ۱. ساختار پوشه‌های لازم را ایجاد کن
-      # ۲. فایل gradle-wrapper.properties را مستقیماً ایجاد کن (دیگر نیازی به sed نیست)
+      - name: Create local.properties
+        run: echo "flutter.sdk=$FLUTTER_ROOT" > android/local.properties
+
       - name: Create Gradle Wrapper
         run: |
           mkdir -p android/gradle/wrapper
