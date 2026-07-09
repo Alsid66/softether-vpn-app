@@ -18,17 +18,14 @@ jobs:
           channel: 'stable'
           flutter-version: '3.16.0'
 
-      # ۱. ساخت زیرساخت گریدل به صورت خودکار (بدون نیاز به فایل در مخزن)
-      - name: Initialize Gradle Wrapper
+      # ساخت فایل local.properties به صورت خودکار با مسیر درست فلاتر
+      - name: Create local.properties
         run: |
-          cd android
-          gradle wrapper --gradle-version 8.2
+          echo "flutter.sdk=$FLUTTER_ROOT" > android/local.properties
 
-      # ۲. دریافت پکیج‌های فلاتر
       - name: Get dependencies
         run: flutter pub get
 
-      # ۳. بیلد نهایی
       - name: Build APK
         run: flutter build apk --release
 
