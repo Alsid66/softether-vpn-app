@@ -18,10 +18,15 @@ jobs:
           channel: 'stable'
           flutter-version: '3.16.0'
 
+      # این مرحله حیاتی است: آپدیت دستیِ نسخه گریدل در فایل کانفیگ پروژه
+      - name: Force Gradle 8.2
+        run: |
+          cd android
+          ./gradlew wrapper --gradle-version 8.2
+          
       - name: Get dependencies
         run: flutter pub get
 
-      # فلاتر خودش گریدل مناسب را دانلود می‌کند، نیازی به ./gradlew نیست
       - name: Build APK
         run: flutter build apk --release
 
