@@ -25,12 +25,12 @@ jobs:
           flutter-version: '3.22.0'
           cache: true
 
-      - name: Fix and recreate Android
+      - name: Fix package name everywhere
         run: |
-          sed -i 's/^name: softether-vpn-app$/name: softether_vpn_app/' pubspec.yaml
+          find . -name '*.dart' -exec sed -i 's/softether-vpn-app/softether_vpn_app/g' {} +
+          sed -i 's/softether-vpn-app/softether_vpn_app/g' pubspec.yaml
           rm -rf android
           flutter create --platforms=android .
-          sed -i 's/^name: softether_vpn_app$/name: softether-vpn-app/' pubspec.yaml
 
       - name: Build APK
         run: flutter build apk --release
