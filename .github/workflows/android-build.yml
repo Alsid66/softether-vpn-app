@@ -22,7 +22,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-          flutter-version: '3.44.6'
+          flutter-version: '3.24.0'
           cache: true
 
       - name: Create local.properties
@@ -36,7 +36,7 @@ jobs:
           distributionPath=wrapper/dists
           zipStoreBase=GRADLE_USER_HOME
           zipStorePath=wrapper/dists
-          distributionUrl=https\://services.gradle.org/distributions/gradle-8.5-all.zip
+          distributionUrl=https\://services.gradle.org/distributions/gradle-8.3-all.zip
           EOF
 
       - name: Fix settings.gradle
@@ -63,6 +63,8 @@ jobs:
           plugins {
               id "dev.flutter.flutter-plugin-loader" version "1.0.0"
               id "dev.flutter.flutter-gradle-plugin" version "1.0.0"
+              id "com.android.application" version "8.2.2" apply false
+              id "org.jetbrains.kotlin.android" version "1.9.22" apply false
           }
 
           include ":app"
