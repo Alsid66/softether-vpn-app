@@ -39,6 +39,35 @@ jobs:
           distributionUrl=https\://services.gradle.org/distributions/gradle-8.5-all.zip
           EOF
 
+      - name: Fix settings.gradle
+        run: |
+          cat > android/settings.gradle << 'EOF'
+          pluginManagement {
+              def flutterSdkPath = {
+                  def properties = new Properties()
+                  file("local.properties").withInputStream { properties.load(it) }
+                  def sdkPath = properties.getProperty("flutter.sdk")
+                  assert sdkPath != null, "flutter.sdk not set in local.properties"
+                  return sdkPath
+              }()
+
+              includeBuild("$flutterSdkPath/packages/flutter_tools/gradle")
+
+              repositories {
+                  google()
+                  mavenCentral()
+                  gradlePluginPortal()
+              }
+          }
+
+          plugins {
+              id "dev.flutter.flutter-plugin-loader" version "1.0.0"
+              id "dev.flutter.flutter-gradle-plugin" version "1.0.0"
+          }
+
+          include ":app"
+          EOF
+
       - name: Get dependencies
         run: flutter pub get
 
