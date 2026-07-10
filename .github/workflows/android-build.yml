@@ -70,6 +70,39 @@ jobs:
           include ":app"
           EOF
 
+      - name: Fix app build.gradle
+        run: |
+          cat > android/app/build.gradle << 'EOF'
+          plugins {
+              id "com.android.application"
+              id "kotlin-android"
+              id "dev.flutter.flutter-gradle-plugin"
+          }
+
+          android {
+              namespace = 'com.example.softether_vpn_app'
+              compileSdk = flutter.compileSdkVersion
+
+              defaultConfig {
+                  applicationId = 'com.example.softether_vpn_app'
+                  minSdk = 21
+                  targetSdk = flutter.targetSdkVersion
+                  versionCode = flutter.versionCode
+                  versionName = flutter.versionName
+              }
+
+              buildTypes {
+                  release {
+                      signingConfig = signingConfigs.debug
+                  }
+              }
+          }
+
+          kotlin {
+              jvmToolchain(17)
+          }
+          EOF
+
       - name: Get dependencies
         run: flutter pub get
 
